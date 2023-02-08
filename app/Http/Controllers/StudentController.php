@@ -31,4 +31,49 @@ class StudentController extends Controller
 
         return response($students);
     }
+
+    public function create()
+    {
+        return view('student-create');
+    }
+
+    public function insert(Request $request)
+    {
+        Student::create([
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
+            'email' => $request->get('email'),
+            'mobile_number' => $request->get('mobile_number'),
+        ]);
+
+        return redirect('student/list');
+    }
+
+    public function edit($id)
+    {
+        $student = Student::find($id);
+
+        return view('student-edit', ['student' => $student]);
+    }
+
+    public function update($id, Request $request)
+    {
+        Student::where('id', $id)->update(
+            [
+                'first_name' => $request->get('first_name'),
+                'last_name' => $request->get('last_name'),
+                'email' => $request->get('email'),
+                'mobile_number' => $request->get('mobile_number'),
+            ]
+        );
+
+        return redirect('student/list');
+    }
+
+    public function delete($id)
+    {
+        Student::where('id', $id)->delete();
+
+        return response(['message' => 'Record deleted successfully.']);
+    }
 }

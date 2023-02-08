@@ -34,3 +34,11 @@ Route::get('dashboard', [DashboardController::class, 'index']);
 Route::get('/student/list', [StudentController::class, 'listView']);
 
 Route::get('/api/student/list', [StudentController::class, 'list']);
+
+Route::get('/student/create', [StudentController::class, 'create']);
+Route::post('/student/insert', [StudentController::class, 'insert']);
+
+Route::get('/student/edit/{id}', [StudentController::class, 'edit']);
+Route::post('/student/update/{id}', [StudentController::class, 'update']);
+
+Route::get('/student/delete/{id}', [StudentController::class, 'delete']);

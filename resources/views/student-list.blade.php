@@ -15,6 +15,10 @@
 @section('main-content')
 <div style="padding: 30px 50px">
     <div style="text-align: right;">
+        <a href="{{ url('/student/create') }}" class="btn btn-primary">Add Student</a>
+    </div>
+    <br>
+    <div style="text-align: right;">
         <input onkeyup="getStudentList()" type="search" name="" id="searchText" placeholder="Search Record...">
     </div>
     <table class="table" id="student-table">
@@ -25,6 +29,7 @@
             <th>Email</th>
             <th>Mobile Number</th>
             <th>Created At</th>
+            <th>Action</th>
         </thead>
         <tbody>
             {{-- AJAX records will be here --}}
@@ -38,7 +43,6 @@
 
         getStudentList();
     });
-
 
     function getStudentList()
     {
@@ -66,6 +70,7 @@
                         rows += "<td>" + student.email + "</td>";
                         rows += "<td>" + student.mobile_number + "</td>";
                         rows += "<td>" + student.created_at + "</td>";
+                        rows += "<td><a href='{{ url('/student/edit') }}/"+student.id+"' class='btn btn-warning'>Edit</a>&nbsp;<button class='btn btn-danger' onClick='deleteRecord("+student.id+")'>Delete</button></td>";
                         rows += "</tr>";
                     });
                 }else {
@@ -81,6 +86,22 @@
                 console.error(error);
             }
         });
+    }
+
+    function deleteRecord(id)
+    {
+        if(confirm('Are you sure to delete this record?')) {
+
+            $.ajax({
+                url: '{{ url("student/delete") }}/' + id,
+                type: 'GET',
+                success: function(response) {
+
+                    getStudentList();
+                    alert(response.message);
+                }
+            });
+        }
     }
 </script>
 @endsection
