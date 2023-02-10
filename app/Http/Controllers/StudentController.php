@@ -14,19 +14,19 @@ class StudentController extends Controller
 
     public function list(Request $request)
     {
-        if($request->get('searchText') == null || $request->get('searchText') == '') {
+        if ($request->get('searchText') == null || $request->get('searchText') == '') {
 
             $students = Student::orderBy('id', 'DESC')->get();
-        }else {
+        } else {
 
             $search = $request->get('searchText');
 
             $students = Student::where('first_name', 'like', "%$search%")
-                                ->orWhere('last_name', 'like', "%$search%")
-                                ->orWhere('email', 'like', "%$search%")
-                                ->orWhere('mobile_number', 'like', "%$search%")
-                                ->orderBy('id', 'DESC')
-                                ->get();
+                ->orWhere('last_name', 'like', "%$search%")
+                ->orWhere('email', 'like', "%$search%")
+                ->orWhere('mobile_number', 'like', "%$search%")
+                ->orderBy('id', 'DESC')
+                ->get();
         }
 
         return response($students);
@@ -39,12 +39,31 @@ class StudentController extends Controller
 
     public function insert(Request $request)
     {
-        Student::create([
+        $data = [
             'first_name' => $request->get('first_name'),
             'last_name' => $request->get('last_name'),
             'email' => $request->get('email'),
             'mobile_number' => $request->get('mobile_number'),
-        ]);
+        ];
+
+
+        if ($request->hasFile('image')) {
+
+            $image = $request->file('image');
+
+            $extension = $image->getClientOriginalExtension();
+
+            // $name = $image->getClientOriginalName();
+
+            $name = time() . '.' . $extension;
+
+            //Upload Image to folder
+            $image->move(public_path('assets/images'), $name);
+
+            $data['image'] = $name;
+        }
+
+        Student::create($data);
 
         return redirect('student/list');
     }
@@ -58,21 +77,51 @@ class StudentController extends Controller
 
     public function update($id, Request $request)
     {
-        Student::where('id', $id)->update(
-            [
-                'first_name' => $request->get('first_name'),
-                'last_name' => $request->get('last_name'),
-                'email' => $request->get('email'),
-                'mobile_number' => $request->get('mobile_number'),
-            ]
-        );
+        $student = Student::where('id', $id)->first();
+
+        $data = [
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
+            'email' => $request->get('email'),
+            'mobile_number' => $request->get('mobile_number'),
+        ];
+
+        if ($request->hasFile('image')) {
+
+            $image = $request->file('image');
+
+            $extension = $image->getClientOriginalExtension();
+
+            // $name = $image->getClientOriginalName();
+
+            $name = time() . '.' . $extension;
+
+            //Upload Image to folder
+            $image->move(public_path('assets/images'), $name);
+
+            $data['image'] = $name;
+
+            if ($student->image !== null) {
+
+                unlink(public_path("assets/images/$student->image"));
+            }
+        }
+
+        $student->update($data);
 
         return redirect('student/list');
     }
 
     public function delete($id)
     {
-        Student::where('id', $id)->delete();
+        $student = Student::where('id', $id)->first();
+
+        if ($student->image !== null) {
+
+            unlink(public_path("assets/images/$student->image"));
+        }
+
+        $student->delete();
 
         return response(['message' => 'Record deleted successfully.']);
     }

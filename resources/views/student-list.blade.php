@@ -10,6 +10,11 @@
     .table {
         margin-top: 30px;
     }
+
+    .profile-img {
+
+        width: 50%;
+    }
 </style>
 @endsection
 @section('main-content')
@@ -24,6 +29,7 @@
     <table class="table" id="student-table">
         <thead>
             <th>Sr. No.</th>
+            <th>Profile Photo</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
@@ -39,6 +45,10 @@
 @endsection
 @section('javascript')
 <script>
+    var BASE_URL = "{{ url('/') }}";
+
+    console.log(BASE_URL);
+
     $(document).ready(function() {
 
         getStudentList();
@@ -65,6 +75,7 @@
 
                         rows += "<tr>";
                         rows += "<td>" + (++index) + "</td>";
+                        rows += "<td><img class='profile-img' src='" + BASE_URL + '/public/assets/images/' + student.image + "' /></td>";
                         rows += "<td>" + student.first_name + "</td>";
                         rows += "<td>" + student.last_name + "</td>";
                         rows += "<td>" + student.email + "</td>";
