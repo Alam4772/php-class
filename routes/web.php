@@ -3,6 +3,7 @@
 use App\Http\Controllers\SampleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +29,10 @@ Route::get('layout', function () {
 });
 
 
+Route::get('user/login', [UserController::class, 'displayLogin']);
+Route::post('user/dologin', [UserController::class, 'doLogin']);
+
+
 Route::get('dashboard', [DashboardController::class, 'index']);
 
 // Student Route
@@ -42,3 +47,7 @@ Route::get('/student/edit/{id}', [StudentController::class, 'edit']);
 Route::post('/student/update/{id}', [StudentController::class, 'update']);
 
 Route::get('/student/delete/{id}', [StudentController::class, 'delete']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
