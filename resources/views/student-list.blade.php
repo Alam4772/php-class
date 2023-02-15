@@ -30,8 +30,7 @@
         <thead>
             <th>Sr. No.</th>
             <th>Profile Photo</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Name</th>
             <th>Email</th>
             <th>Mobile Number</th>
             <th>Created At</th>
@@ -76,8 +75,7 @@
                         rows += "<tr>";
                         rows += "<td>" + (++index) + "</td>";
                         rows += "<td><img class='profile-img' src='" + BASE_URL + '/public/assets/images/' + student.image + "' /></td>";
-                        rows += "<td>" + student.first_name + "</td>";
-                        rows += "<td>" + student.last_name + "</td>";
+                        rows += "<td>" + student.full_name + "</td>";
                         rows += "<td>" + student.email + "</td>";
                         rows += "<td>" + student.mobile_number + "</td>";
                         rows += "<td>" + student.created_at + "</td>";
@@ -110,6 +108,15 @@
 
                     getStudentList();
                     alert(response.message);
+                },
+                error: function(error) {
+
+                    alert(error.responseJSON.message);
+
+                    if((error.responseJSON).hasOwnProperty('redirect')) {
+
+                        window.location.href = "{{ url('/') }}/" + error.responseJSON.redirect;
+                    }
                 }
             });
         }

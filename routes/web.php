@@ -31,22 +31,23 @@ Route::get('layout', function () {
 
 Route::get('user/login', [UserController::class, 'displayLogin']);
 Route::post('user/dologin', [UserController::class, 'doLogin']);
+Route::get('user/dologout', [UserController::class, 'doLogout']);
 
 
-Route::get('dashboard', [DashboardController::class, 'index']);
+Route::get('dashboard', [DashboardController::class, 'index'])->middleware('auth.check');
 
 // Student Route
-Route::get('/student/list', [StudentController::class, 'listView']);
+Route::middleware(['auth.check'])->group(function () {
 
-Route::get('/api/student/list', [StudentController::class, 'list']);
+    Route::get('/student/list', [StudentController::class, 'listView']);
+    Route::get('/api/student/list', [StudentController::class, 'list']);
+    Route::get('/student/create', [StudentController::class, 'create']);
+    Route::post('/student/insert', [StudentController::class, 'insert']);
+    Route::get('/student/edit/{id}', [StudentController::class, 'edit']);
+    Route::post('/student/update/{id}', [StudentController::class, 'update']);
+    Route::get('/student/delete/{id}', [StudentController::class, 'delete']);
+});
 
-Route::get('/student/create', [StudentController::class, 'create']);
-Route::post('/student/insert', [StudentController::class, 'insert']);
-
-Route::get('/student/edit/{id}', [StudentController::class, 'edit']);
-Route::post('/student/update/{id}', [StudentController::class, 'update']);
-
-Route::get('/student/delete/{id}', [StudentController::class, 'delete']);
 
 Auth::routes();
 

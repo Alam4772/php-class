@@ -27,4 +27,11 @@ class UserController extends Controller
             return back()->withErrors(['message' => 'Credentials does not match.']);
         }
     }
+
+    public function doLogout()
+    {
+        Auth::logout();
+
+        return redirect('user/login');
+    }
 }
