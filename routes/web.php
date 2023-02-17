@@ -32,6 +32,11 @@ Route::get('layout', function () {
 Route::get('user/login', [UserController::class, 'displayLogin']);
 Route::post('user/dologin', [UserController::class, 'doLogin']);
 Route::get('user/dologout', [UserController::class, 'doLogout']);
+Route::get('user/register', [UserController::class, 'registerView']);
+Route::post('user/register-post', [UserController::class, 'register']);
+Route::get('email/verification/{token}', [UserController::class, 'emailVerification']);
+Route::get('show/password/generate/{token}', [UserController::class, 'showPasswordGenerate']);
+Route::post('password/save/{token}', [UserController::class, 'savePassword']);
 
 
 Route::get('dashboard', [DashboardController::class, 'index'])->middleware('auth.check');

@@ -76,7 +76,7 @@
                         rows += "<td>" + (++index) + "</td>";
                         rows += "<td><img class='profile-img' src='" + BASE_URL + '/public/assets/images/' + student.image + "' /></td>";
                         rows += "<td>" + student.full_name + "</td>";
-                        rows += "<td>" + student.email + "</td>";
+                        rows += "<td>" + student.user.email + "</td>";
                         rows += "<td>" + student.mobile_number + "</td>";
                         rows += "<td>" + student.created_at + "</td>";
                         rows += "<td><a href='{{ url('/student/edit') }}/"+student.id+"' class='btn btn-warning'>Edit</a>&nbsp;<button class='btn btn-danger' onClick='deleteRecord("+student.id+")'>Delete</button></td>";

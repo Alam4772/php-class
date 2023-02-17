@@ -16,12 +16,12 @@ class StudentController extends Controller
     {
         if ($request->get('searchText') == null || $request->get('searchText') == '') {
 
-            $students = Student::orderBy('id', 'DESC')->get();
+            $students = Student::with('user')->orderBy('id', 'DESC')->get();
         } else {
 
             $search = $request->get('searchText');
 
-            $students = Student::where('first_name', 'like', "%$search%")
+            $students = Student::with('user')->where('first_name', 'like', "%$search%")
                 ->orWhere('last_name', 'like', "%$search%")
                 ->orWhere('email', 'like', "%$search%")
                 ->orWhere('mobile_number', 'like', "%$search%")
