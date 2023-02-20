@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Game;
+use App\Models\StudentGame;
 use Illuminate\Http\Request;
 use App\Models\Student;
 
@@ -23,7 +25,6 @@ class StudentController extends Controller
 
             $students = Student::with('user')->where('first_name', 'like', "%$search%")
                 ->orWhere('last_name', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%")
                 ->orWhere('mobile_number', 'like', "%$search%")
                 ->orderBy('id', 'DESC')
                 ->get();
