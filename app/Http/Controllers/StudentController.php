@@ -11,7 +11,13 @@ class StudentController extends Controller
 {
     public function listView()
     {
-        return view('student-list');
+        try {
+
+            return view('student-list');
+        } catch (\Exception $e) {
+
+            echo $e->getMessage();
+        }
     }
 
     public function list(Request $request)
@@ -115,15 +121,22 @@ class StudentController extends Controller
 
     public function delete($id)
     {
-        $student = Student::where('id', $id)->first();
+        try {
 
-        if ($student->image !== null) {
+            $student = Student::where('id', $id)->first();
 
-            unlink(public_path("assets/images/$student->image"));
+            if ($student->image !== null) {
+
+                unlink(public_path("assets/images/$student->image"));
+            }
+
+            $student->delete();
+
+            return response(['message' => 'Record deleted successfully.']);
+
+        } catch (\Exception $e) {
+
+            return response(['message' => $e->getMessage()], 400);
         }
-
-        $student->delete();
-
-        return response(['message' => 'Record deleted successfully.']);
     }
 }

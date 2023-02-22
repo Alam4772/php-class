@@ -79,11 +79,11 @@ class UserController extends Controller
                 $data['user'] = $user;
                 $data['link'] = url("email/verification/$token");
 
-                Mail::send('emails.register', $data, function($message) use($user) {
-                    $message->to($user->email, $user->name)->subject
-                       ('Email Verification');
-                    $message->from(env('MAIL_FROM_ADDRESS'));
-                 });
+                // Mail::send('emails.register', $data, function($message) use($user) {
+                //     $message->to($user->email, $user->name)->subject
+                //        ('Email Verification');
+                //     $message->from(env('MAIL_FROM_ADDRESS'));
+                //  });
             }
         }
     }
@@ -106,14 +106,21 @@ class UserController extends Controller
 
     public function savePassword($token, Request $request)
     {
-        $email =  base64_decode($token);
+        try {
 
-        $user = $request->get('user');
+            $email =  base64_decode($token);
 
-        User::whereEmail($email)->update([
-            'password' => bcrypt($user['password'])
-        ]);
+            $user = $request->get('user');
 
-        return redirect("user/login");
+            User::whereEmail($email)->update([
+                'password' => bcrypt($user['password'])
+            ]);
+
+            return redirect("user/login");
+
+        } catch (\Exception $e) {
+
+            echo $e->getMessage();
+        }
     }
 }

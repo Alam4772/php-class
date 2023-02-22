@@ -21,10 +21,20 @@ class Student extends Model
         'image'
     ];
 
-
     protected $appends = [
         'full_name'
     ];
+
+
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['first_name'] = ucwords(strtolower($value));
+    }
+
+    public function setLastNameAttribute($value)
+    {
+        $this->attributes['last_name'] = strtoupper($value);
+    }
 
     public function getFullNameAttribute()
     {
