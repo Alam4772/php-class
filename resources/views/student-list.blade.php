@@ -20,6 +20,7 @@
 @section('main-content')
 <div style="padding: 30px 50px">
     <div style="text-align: right;">
+        <a href="{{ url('/student/export/excel') }}" class="btn btn-success">Export Excel</a>
         <a href="{{ url('/student/create') }}" class="btn btn-primary">Add Student</a>
     </div>
     <br>

@@ -51,6 +51,10 @@ Route::middleware(['auth.check'])->group(function () {
     Route::get('/student/edit/{id}', [StudentController::class, 'edit']);
     Route::post('/student/update/{id}', [StudentController::class, 'update']);
     Route::get('/student/delete/{id}', [StudentController::class, 'delete']);
+    Route::get('/student/export/excel', [StudentController::class, 'exportExcel']);
+    Route::get('/student/download/image', [StudentController::class, 'downloadFile']);
+    Route::get('/send/otp', [StudentController::class, 'sendOTP']);
+    Route::get('/verify/otp', [StudentController::class, 'verifyOTP']);
 });
 
 

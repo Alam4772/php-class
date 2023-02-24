@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StudentsExport;
 use App\Models\Game;
 use App\Models\StudentGame;
 use Illuminate\Http\Request;
 use App\Models\Student;
+use Maatwebsite\Excel\Facades\Excel;
+use Response;
 
 class StudentController extends Controller
 {
@@ -138,5 +141,29 @@ class StudentController extends Controller
 
             return response(['message' => $e->getMessage()], 400);
         }
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new StudentsExport, 'students.xlsx');
+    }
+
+    public function downloadFile()
+    {
+        return response()->download(public_path() . "/assets/images/1676046309.png");
+    }
+
+    public function sendOTP()
+    {
+        $mobile_number = 7856451223;
+
+        $otp = sprintf("%06d", mt_rand(1, 999999));
+
+        dd($otp);
+    }
+
+    public function verifyOTP()
+    {
+        $mobile_number = 7856451223;
     }
 }
